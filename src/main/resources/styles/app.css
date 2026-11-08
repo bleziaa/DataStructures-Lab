@@ -1,0 +1,24 @@
+.app-root { -fx-background-color: #0d0b13; -fx-font-family: "Inter", "Noto Sans", sans-serif; }
+.sidebar { -fx-background-color: #15111f; -fx-border-color: transparent #2b2338 transparent transparent; -fx-border-width: 0 1 0 0; }
+.brand { -fx-text-fill: #f7f3ff; -fx-font-size: 15px; -fx-font-weight: 900; }
+.sidebar-caption { -fx-text-fill: #81778f; -fx-font-size: 10px; -fx-font-weight: bold; -fx-letter-spacing: 1.2px; }
+.nav-button { -fx-background-color: transparent; -fx-text-fill: #c9c1d5; -fx-font-size: 13px; -fx-padding: 12 14; -fx-background-radius: 9; -fx-cursor: hand; }
+.nav-button:hover { -fx-background-color: #2a203b; -fx-text-fill: white; }
+.eyebrow { -fx-text-fill: #a78bfa; -fx-font-size: 10px; -fx-font-weight: bold; -fx-letter-spacing: 1.5px; }
+.page-title { -fx-text-fill: #faf7ff; -fx-font-size: 27px; -fx-font-weight: bold; }
+.muted { -fx-text-fill: #93899f; -fx-font-size: 12px; }
+.status-badge { -fx-text-fill: #c4b5fd; -fx-background-color: #241a36; -fx-padding: 9 13; -fx-background-radius: 30; -fx-font-size: 10px; -fx-font-weight: bold; }
+.panel { -fx-background-color: #171320; -fx-background-radius: 15; -fx-border-color: #30263f; -fx-border-radius: 15; }
+.section-title { -fx-text-fill: #f7f2ff; -fx-font-size: 16px; -fx-font-weight: bold; }
+.count-badge { -fx-text-fill: #d8ccff; -fx-background-color: #2a2040; -fx-padding: 8 12; -fx-background-radius: 20; -fx-font-size: 11px; }
+.canvas-wrap { -fx-background-color: #100d17; -fx-background-radius: 12; -fx-border-color: #2b2338; -fx-border-radius: 12; -fx-padding: 22; }
+.node-canvas { -fx-padding: 12; }
+.node-number { -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; }
+.value-input { -fx-background-color: #100d17; -fx-text-fill: #f7f2ff; -fx-prompt-text-fill: #766c82; -fx-border-color: #3a3049; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 11; }
+.primary-button { -fx-background-color: #7c3aed; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 11 16; -fx-cursor: hand; }
+.primary-button:hover { -fx-background-color: #8b5cf6; }
+.secondary-button { -fx-background-color: #2b2238; -fx-text-fill: #e9ddff; -fx-background-radius: 8; -fx-padding: 11 14; -fx-cursor: hand; }
+.secondary-button:hover { -fx-background-color: #3a2b50; }
+.ghost-button { -fx-background-color: transparent; -fx-text-fill: #a99db8; -fx-padding: 11 12; -fx-cursor: hand; }
+.status-text { -fx-text-fill: #b7a9c9; -fx-font-size: 12px; }
+.separator *.line { -fx-border-color: #30263f; -fx-border-width: 1 0 0 0; }
