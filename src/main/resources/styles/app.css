@@ -22,3 +22,20 @@
 .ghost-button { -fx-background-color: transparent; -fx-text-fill: #a99db8; -fx-padding: 11 12; -fx-cursor: hand; }
 .status-text { -fx-text-fill: #b7a9c9; -fx-font-size: 12px; }
 .separator *.line { -fx-border-color: #30263f; -fx-border-width: 1 0 0 0; }
+
+.concept-text { -fx-text-fill: #c8bdd8; -fx-font-size: 12px; -fx-line-spacing: 2px; }
+.result-text { -fx-text-fill: #f0eaff; -fx-font-size: 13px; -fx-font-weight: bold; }
+.result-error { -fx-text-fill: #fda4af; }
+.log-view { -fx-background-color: #100d17; -fx-control-inner-background: #100d17; -fx-background-radius: 8; -fx-border-color: #30263f; -fx-border-radius: 8; }
+.log-view .list-cell { -fx-background-color: transparent; -fx-text-fill: #9f94ad; -fx-font-size: 11px; -fx-padding: 5 8; }
+.op-caption { -fx-text-fill: #a78bfa; -fx-font-size: 11px; -fx-font-weight: bold; }
+.canvas-scroll, .ops-scroll { -fx-background: #100d17; -fx-background-color: #100d17; -fx-border-color: #30263f; -fx-border-radius: 10; -fx-background-radius: 10; }
+.canvas-scroll > .viewport, .ops-scroll > .viewport { -fx-background-color: #100d17; }
+.home-panel { -fx-background-color: #0d0b13; }
+.status-ok { -fx-text-fill: #c4b5fd; }
+.status-busy { -fx-text-fill: #f0abfc; }
+.status-error { -fx-text-fill: #fda4af; }
+.check-box { -fx-text-fill: #e9ddff; }
+.check-box .box { -fx-background-color: #211a2c; -fx-border-color: #7c3aed; -fx-border-radius: 4; }
+.check-box:selected .mark { -fx-background-color: white; }
+.nav-button:focused, .primary-button:focused, .secondary-button:focused { -fx-border-color: #c4b5fd; -fx-border-radius: 8; }
