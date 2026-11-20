@@ -1,0 +1,100 @@
+name: Pruebas y distribución
+on:
+  push:
+    branches: [main, 'feat/cross-platform-distribution']
+    tags: ['cross-v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            platform: linux
+          - runner: windows-2025
+            platform: windows
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Dependencias gráficas
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y xvfb xauth libgtk-3-0
+      - name: Pruebas de Java y Python
+        run: |
+          mvn -B verify dependency:copy-dependencies -DincludeScope=runtime -DoutputDirectory=target/app
+          cd python
+          python -m unittest discover -s tests -v
+      - name: Empaquetar ambos runtimes
+        run: |
+          cp target/data-structures-lab-1.0.0.jar target/app/
+          jpackage --type app-image --name DataStructuresLab-Java --app-version 1.0.0 --input target/app --dest dist --main-jar data-structures-lab-1.0.0.jar --main-class com.datastructureslab.app.PortableLauncher
+          python -m pip install pyinstaller==6.22.3
+          python -m PyInstaller --noconfirm --clean --windowed --name DataStructuresLab-Python python/main.py
+          mkdir -p dist/DataStructures-Lab downloads
+          mv dist/DataStructuresLab-Java dist/DataStructuresLab-Python dist/DataStructures-Lab/
+          cp DISTRIBUCION.md dist/DataStructures-Lab/
+      - name: Lanzar las dos aplicaciones en Linux
+        if: runner.os == 'Linux'
+        run: |
+          xvfb-run -a timeout 35s dist/DataStructures-Lab/DataStructuresLab-Java/bin/DataStructuresLab-Java --smoke-test
+          xvfb-run -a timeout 35s dist/DataStructures-Lab/DataStructuresLab-Python/DataStructuresLab-Python --smoke-test
+          tar -czf downloads/DataStructures-Lab-linux-x64.tar.gz -C dist DataStructures-Lab
+          tar -tzf downloads/DataStructures-Lab-linux-x64.tar.gz >/dev/null
+      - name: Lanzar las dos aplicaciones en Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          foreach ($name in @('DataStructuresLab-Java', 'DataStructuresLab-Python')) {
+            $path = "dist/DataStructures-Lab/$name/$name.exe"
+            $process = Start-Process -FilePath $path -ArgumentList '--smoke-test' -PassThru
+            if (-not $process.WaitForExit(35000)) {
+              $process.Kill()
+              throw "$name no completó la prueba gráfica."
+            }
+            if ($process.ExitCode -ne 0) { throw "$name salió con código $($process.ExitCode)." }
+          }
+          tar.exe -a -cf downloads/DataStructures-Lab-windows-x64.zip -C dist DataStructures-Lab
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          tar.exe -tf downloads/DataStructures-Lab-windows-x64.zip | Out-Null
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DataStructures-Lab-${{ matrix.platform }}-x64
+          path: downloads/*
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/cross-v')
+    needs: build
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+      - name: Publicar paquetes verificados
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(find release-assets -maxdepth 1 -type f | wc -l)" -eq 2
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes release-assets/*
