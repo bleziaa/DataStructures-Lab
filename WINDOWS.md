@@ -1,6 +1,7 @@
 # DataStructures Lab en Windows
 
-Instala **JDK 17+** y **Maven 3.9+** y comprueba desde CMD `java -version` y `mvn -version`.
-Ejecuta `run-windows.cmd` para abrir la aplicación JavaFX o `test-windows.cmd` para correr las pruebas JUnit.
+Para desarrollo desde el código fuente, instala JDK 17+ y Maven 3.9+ y ejecuta `run-windows.cmd`; `test-windows.cmd` corre JUnit. Estos scripts requieren Java y Maven.
 
-La aplicación ya emplea JavaFX multiplataforma. Estos archivos son lanzadores, **no** un instalador EXE independiente: necesitan Java y Maven instalados. Se debe validar visualmente en un Windows real antes de publicar una distribución.
+El workflow de GitHub Actions compila una aplicación Windows x64 con `jpackage`, que incluye su runtime Java, y publica un ZIP descargable en los artefactos de la ejecución. Descarga y descomprime `DataStructures-Lab-Windows-x64.zip` y abre `DataStructures-Lab.exe`. La descarga del workflow es una app-image autocontenida, no un instalador MSI.
+
+Para Linux x64, usa el artefacto `DataStructures-Lab-Linux-x64.tar.gz`; descomprímelo y ejecuta `DataStructures-Lab/bin/DataStructures-Lab`.
