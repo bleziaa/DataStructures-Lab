@@ -121,14 +121,29 @@ src/
 
 Las pruebas cubren arreglos y matrices, listas, pilas, colas, árboles binarios de búsqueda, grafos y validaciones de entrada.
 
-Verificación local registrada durante el desarrollo:
-- Compilación de todos los fuentes Java mediante `javac --release 17`: correcta.
-- Ejecución de pruebas con JUnit Platform: **28 pruebas exitosas, 0 fallidas**.
-- La ejecución con `mvn clean test` y `mvn javafx:run` queda pendiente de disponer de Maven en el equipo.
+Verificación automatizada:
+- Compilación y ejecución de pruebas Java con Maven: **28 pruebas exitosas, 0 fallidas**.
+- Pruebas de la edición Python: **4 pruebas exitosas, 0 fallidas**.
+- GitHub Actions compila y empaqueta ambas ediciones para Windows y Linux.
+- Las interfaces JavaFX y Tkinter pasaron comprobaciones de inicio gráfico en runners Windows y Linux.
+- Los paquetes autocontenidos están en [GitHub Releases](https://github.com/bleziaa/DataStructures-Lab/releases/tag/cross-v1.0.0).
 
 ## Diseño
 
 Interfaz oscura con acentos morados, negro y blanco. Cada laboratorio presenta el área de visualización, panel de operaciones, información, resultados y bitácora. Las animaciones se implementan con JavaFX Transitions y Timeline.
+
+## Edición Python
+
+El repositorio también incluye una edición gráfica independiente en Python con Tkinter. Conserva los siete laboratorios e incorpora grafos dirigidos y no dirigidos, recorridos BFS y DFS, listas enlazadas, operaciones de borrado y animaciones visuales. Sus implementaciones están en `python/`.
+
+Ejecuta las pruebas con:
+
+```bash
+cd python
+python -m unittest discover -s tests -v
+```
+
+Para usarla sin instalar Python ni Maven, descarga el paquete correspondiente a tu sistema desde [Releases](https://github.com/bleziaa/DataStructures-Lab/releases/tag/cross-v1.0.0). La edición Java y la edición Python son aplicaciones independientes.
 
 ## Paquetes sin instalar Java, Maven ni Python
 
