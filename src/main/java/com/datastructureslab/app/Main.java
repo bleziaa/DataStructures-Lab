@@ -2,6 +2,7 @@ package com.datastructureslab.app;
 
 import com.datastructureslab.controllers.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -33,6 +34,14 @@ public class Main extends Application {
         stage.setMinHeight(700);
         stage.setScene(scene);
         stage.show();
+        if (getParameters().getRaw().contains("--smoke-test")) {
+            for (String module : new String[]{"array", "matrix", "list", "stack", "queue", "tree", "graph"}) {
+                openModule(module);
+                root.applyCss();
+                root.layout();
+            }
+            Platform.exit();
+        }
     }
 
     private VBox buildSidebar() {
