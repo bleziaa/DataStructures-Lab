@@ -1,6 +1,5 @@
-# DataStructures Lab en Windows
+# DataStructures Lab en Windows y Linux
 
-Instala **JDK 17+** y **Maven 3.9+** y comprueba desde CMD `java -version` y `mvn -version`.
-Ejecuta `run-windows.cmd` para abrir la aplicación JavaFX o `test-windows.cmd` para correr las pruebas JUnit.
+La versión JavaFX actual se ejecuta en ambos sistemas. Los lanzadores `run-windows.cmd` y `run-linux.sh` son para desarrollo y requieren JDK 17+ y Maven 3.9+. `test-windows.cmd` y `mvn test` ejecutan las pruebas.
 
-La aplicación ya emplea JavaFX multiplataforma. Estos archivos son lanzadores, **no** un instalador EXE independiente: necesitan Java y Maven instalados. Se debe validar visualmente en un Windows real antes de publicar una distribución.
+Todavía no hay un instalador o paquete autocontenido publicado para descargar. El empaquetado con runtime de Java y la versión gráfica en Python están pendientes de verificación. No uses el JAR solo como si fuera una aplicación independiente: requiere JavaFX y un runtime compatible.
