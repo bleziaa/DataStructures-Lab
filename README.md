@@ -129,3 +129,7 @@ Verificación local registrada durante el desarrollo:
 ## Diseño
 
 Interfaz oscura con acentos morados, negro y blanco. Cada laboratorio presenta el área de visualización, panel de operaciones, información, resultados y bitácora. Las animaciones se implementan con JavaFX Transitions y Timeline.
+
+## Paquetes sin instalar Java, Maven ni Python
+
+Consulta [la guía de distribución](DISTRIBUCION.md).
