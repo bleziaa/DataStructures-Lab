@@ -41,6 +41,13 @@ class LinkedList:
             current = current.next
         return current.value
 
+    def __setitem__(self, index, value):
+        if index < 0:
+            index += self._size
+        if not 0 <= index < self._size:
+            raise IndexError('Índice fuera de rango')
+        self._node_at(index).value = value
+
     def index(self, value):
         for index, item in enumerate(self):
             if item == value:

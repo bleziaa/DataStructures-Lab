@@ -118,6 +118,9 @@ class Lab:
         editor.pack(fill='x',padx=18,pady=(0,10))
         labels={'Matrices':('Valor (o filas al crear)','Coordenada fila,columna (o columnas al crear)'),
                 'Arreglos':('Valor','Índice (0, 1, 2...)'),
+                'Listas':('Valor','Índice para consultar/modificar'),
+                'Pilas':('Valor','Índice para consultar/modificar'),
+                'Colas':('Valor','Índice para consultar/modificar'),
                 'Grafos':('Vértice de origen','Vértice de destino'),
                 'Árboles':('Valor del nodo','No necesario')}
         label1,label2=labels.get(name,('Valor','Segundo valor (opcional)'))
@@ -135,10 +138,11 @@ class Lab:
         ops=['Insertar','Eliminar','Buscar','Recorrer','Reiniciar']
         # Arreglos : botones de operaciones
         if name=='Arreglos':ops=['Insertar','Consultar','Modificar','Eliminar','Buscar','Recorrer','Reiniciar']
+        if name=='Listas':ops=['Insertar','Consultar','Modificar','Eliminar','Buscar','Recorrer','Reiniciar']
         # Pilas : botones de operaciones
-        if name=='Pilas':ops=['PUSH','POP','PEEK','Reiniciar']
+        if name=='Pilas':ops=['PUSH','POP','PEEK','Consultar','Modificar','Reiniciar']
         # Colas : botones de operaciones
-        if name=='Colas':ops=['ENQUEUE','DEQUEUE','PEEK','Reiniciar']
+        if name=='Colas':ops=['ENQUEUE','DEQUEUE','PEEK','Consultar','Modificar','Reiniciar']
         # Grafos : botones de operaciones
         if name=='Grafos':
             ops=['Vértice','Arista','Conectar todos','Quitar vértice','Quitar arista','BFS','DFS','Vecinos','Adyacencia','Reiniciar']
@@ -160,7 +164,7 @@ class Lab:
         # Árboles : botones de operaciones
         if name=='Árboles':ops=['Insertar','Eliminar','Buscar','Inorden','Preorden','Postorden','Reiniciar']
         # Matrices : botones de operaciones
-        if name=='Matrices':ops=['Crear (filas, columnas)','Asignar','Consultar','Recorrer','Reiniciar']
+        if name=='Matrices':ops=['Crear (filas, columnas)','Asignar','Consultar','Modificar','Eliminar','Recorrer','Reiniciar']
         for op in ops:
             tk.Button(controls,text=op,bg=BUTTON,fg='white',relief='flat',command=lambda o=op,n=name:self.action(n,o,entry.get(),extra.get())).pack(side='left',padx=3)
         tk.Label(f,text='3 · CARGA GUIADA',bg=PANEL,fg=PURPLE,anchor='w',
@@ -212,7 +216,7 @@ class Lab:
             first,second=self.editors[name]
             first.delete(0,'end');first.insert(0,str(value))
             second.delete(0,'end')
-            if name=='Arreglos':second.insert(0,str(key))
+            if name in ('Arreglos','Listas','Pilas','Colas'):second.insert(0,str(key))
             status.config(text=f'Elemento seleccionado: {value} (posición {key}).')
         self.draw(name)
 
@@ -340,10 +344,18 @@ class Lab:
         row, col = (self.integer(part, label) for part, label in zip(parts, ('Fila', 'Columna')))
         if not (0 <= row < len(data) and 0 <= col < len(data[0])):
             raise ValueError('Coordenadas fuera de rango. Los índices empiezan en cero.')
-        if operation == 'Asignar':
-            data[row][col] = str(parse_number(first, 'El valor'))
+        if operation in ('Asignar', 'Modificar'):
+            new_value = str(parse_number(first, 'El valor'))
+            old_value = data[row][col]
+            data[row][col] = new_value
+            if operation == 'Modificar':
+                return f'Celda ({row},{col}) modificada: {old_value if old_value is not None else "vacía"} → {new_value}.', [(None, (row, col))]
+            return f'Valor {new_value} asignado a ({row},{col}).', [(None, (row, col))]
+        if operation == 'Eliminar':
+            data[row][col] = None
+            return f'Celda ({row},{col}) vaciada.', [(None, (row, col))]
         value = data[row][col]
-        return f'Celda ({row},{col}): {value if value is not None else "vacía"}.', [(None, (row, col))]
+        return f'Consulta ({row},{col}): {value if value is not None else "vacía"}.', [(None, (row, col))]
 
     def linear_action(self, name, data, operation, first, second):
         tree = name == 'Árboles'
@@ -378,6 +390,18 @@ class Lab:
                 return f'Posición {index}: {data[index]}.', [(None, index)]
             old, data[index] = data[index], str(parse_number(first, 'El valor'))
             return f'Posición {index} modificada: {old} → {data[index]}.', [(None, index)]
+        if name in ('Listas', 'Pilas', 'Colas') and operation in ('Consultar', 'Modificar'):
+            if not second:
+                raise ValueError('Indica el índice en el segundo campo (empieza en cero).')
+            index = self.integer(second, 'El índice')
+            if not 0 <= index < len(data):
+                raise ValueError(f'Índice fuera de rango. Usa de 0 a {len(data)-1}.')
+            if operation == 'Consultar':
+                return f'Posición {index}: {data[index]}.', [(None, index)]
+            old = data[index]
+            new = str(parse_number(first, 'El valor'))
+            data[index] = new
+            return f'Posición {index} modificada: {old} → {new}.', [(None, index)]
         # Pilas y colas : extracción y consulta
         if operation in ('POP', 'DEQUEUE', 'PEEK'):
             index = len(data) - 1 if name == 'Pilas' else 0
