@@ -24,8 +24,10 @@ public class StackModule extends AbstractModule {
         Button peek=action("PEEK","secondary-button",this::peek);
         Button walk=action("Mostrar pila","secondary-button",this::show);
         bindEnter(value,push); addRow("Valor",value,push,pop,peek,walk);
+        addRow("Prueba guiada",action("Cargar ejemplo","demo-button",this::loadExample));
         topTag.getStyleClass().add("op-caption"); render(false);
     }
+    private void loadExample(){stack.clear();stack.push(10);stack.push(20);stack.push(30);render(true);info("Ejemplo listo: TOP → 30 → 20 → 10. Pulsa POP para retirar el último que entró.");}
     private int read(){return InputValidator.parseValue(value.getText(),"Valor");}
     private void push(){int v=read(); stack.push(v); value.clear(); render(true); info("PUSH "+v+": el nuevo nodo queda en TOP.");}
     private void pop(){int v=stack.pop(); if(!nodes.isEmpty()){BallView b=nodes.get(0); play(Anim.seq(Anim.flyOut(b,b.getLayoutX()+130,b.getLayoutY()-70),Anim.action(()->{render(false);info("POP: salió "+v+".");})));}else info("POP: "+v);}

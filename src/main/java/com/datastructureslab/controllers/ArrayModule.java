@@ -44,8 +44,17 @@ public class ArrayModule extends AbstractModule {
         Button traverse = action("▶  Recorrer", "secondary-button", this::traverse);
         bindEnter(valueField, register);
         addRow("2. Trabaja con una posición", indexField, valueField, register, modify, query, traverse);
+        addRow("Prueba guiada", action("Cargar ejemplo", "demo-button", this::loadExample));
         setStats("Sin arreglo");
         info("Crea un arreglo indicando cuántos elementos tendrá.");
+    }
+
+    private void loadExample() {
+        sizeField.setText("5");
+        create();
+        for (int i=0;i<5;i++) { int v=(i+1)*10; array.set(i,v); slots.get(i).setText(String.valueOf(v)); slots.get(i).setState(State.NORMAL); }
+        updateStats();
+        info("Ejemplo listo: [10, 20, 30, 40, 50]. Prueba consultar el índice 2 o modificarlo.");
     }
 
     private ArrayStructure requireArray() {

@@ -49,8 +49,17 @@ public class MatrixModule extends AbstractModule {
         Button traverse = action("▶  Recorrer", "secondary-button", this::traverse);
         bindEnter(valueField, register);
         addRow("2. Trabaja con una celda", rowField, colField, valueField, register, modify, query, traverse);
+        addRow("Prueba guiada", action("Cargar ejemplo", "demo-button", this::loadExample));
         setStats("Sin matriz");
         info("Crea una matriz indicando filas y columnas.");
+    }
+
+    private void loadExample() {
+        rowsField.setText("3"); colsField.setText("3"); create();
+        int[][] data={{1,2,3},{4,5,6},{7,8,9}};
+        for(int r=0;r<3;r++) for(int c=0;c<3;c++){ matrix.set(r,c,data[r][c]); cell(r,c).setText(String.valueOf(data[r][c])); cell(r,c).setState(State.NORMAL); }
+        updateStats();
+        info("Ejemplo listo: matriz 3×3. Prueba consultar la celda (1, 1): contiene 5.");
     }
 
     private MatrixStructure requireMatrix() {

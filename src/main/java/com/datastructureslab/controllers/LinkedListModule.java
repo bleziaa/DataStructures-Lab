@@ -28,17 +28,35 @@ public class LinkedListModule extends AbstractModule {
         Button walk = action("Recorrer", "secondary-button", this::traverse);
         bindEnter(value, last);
         addRow("Valor de operación", value, first, last, find, remove, walk);
+        addRow("Prueba guiada", action("Cargar ejemplo", "demo-button", this::loadExample));
         render(false);
     }
+    private void loadExample(){ list.clear(); for(int v:new int[]{10,20,30,40}) list.insertLast(v); render(true); info("Ejemplo listo: HEAD → 10 → 20 → 30 → 40 → TAIL. Prueba buscar o eliminar 20."); }
     private int read() { return InputValidator.parseValue(value.getText(), "Valor"); }
     private void insertFirst() { int v=read(); list.insertFirst(v); value.clear(); render(true); info("Nodo "+v+" insertado al inicio. HEAD apunta al nuevo nodo."); }
     private void insertLast() { int v=read(); list.insertLast(v); value.clear(); render(true); info("Nodo "+v+" agregado al final. TAIL actualizado."); }
     private void search() {
-        int v=read(), i=list.indexOf(v);
-        if(i<0){ info("El valor "+v+" no existe en la lista."); return; }
-        List<Animation> a=new ArrayList<>();
-        for(int k=0;k<=i;k++){ final int n=k; a.add(Anim.seq(Anim.action(()->note("Visitando nodo "+n)),Anim.flash(nodes.get(k),BallView.State.ACTIVE,BallView.State.NORMAL,260))); }
-        a.add(Anim.action(()->info("Valor "+v+" encontrado en la posición "+i+"."))); play(Anim.seq(a.toArray(new Animation[0])));
+        int v = read(), target = list.indexOf(v);
+        if (nodes.isEmpty()) {
+            info("La lista está vacía. No hay nodos para buscar.");
+            return;
+        }
+        List<Animation> steps = new ArrayList<>();
+        int limit = target < 0 ? nodes.size() : target + 1;
+        for (int k = 0; k < limit; k++) {
+            final int position = k;
+            BallView ball = nodes.get(k);
+            steps.add(Anim.action(() -> note("Comparando nodo " + position + " con " + v)));
+            if (k == target) {
+                steps.add(Anim.mark(ball, BallView.State.FOUND, 450));
+            } else {
+                steps.add(Anim.flash(ball, BallView.State.ACTIVE, BallView.State.NORMAL, 320));
+            }
+        }
+        steps.add(Anim.action(() -> info(target < 0
+            ? "Se recorrieron " + nodes.size() + " nodos; " + v + " no está en la lista."
+            : "Valor " + v + " encontrado en la posición " + target + ".")));
+        play(Anim.seq(steps.toArray(new Animation[0])));
     }
     private void remove() {
         int v=read(); int i=list.remove(v);

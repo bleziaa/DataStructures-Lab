@@ -25,9 +25,11 @@ public class QueueModule extends AbstractModule {
         Button show = action("Recorrer", "secondary-button", this::show);
         bindEnter(value, enq);
         addRow("Valor", value, enq, deq, peek, show);
+        addRow("Prueba guiada", action("Cargar ejemplo", "demo-button", this::loadExample));
         render(false);
     }
 
+    private void loadExample(){queue.clear();queue.enqueue(10);queue.enqueue(20);queue.enqueue(30);render(true);info("Ejemplo listo: FRONT → 10 → 20 → 30 → REAR. Pulsa DEQUEUE para retirar el primero.");}
     private int read() { return InputValidator.parseValue(value.getText(), "Valor"); }
 
     private void enqueue() {

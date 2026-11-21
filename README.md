@@ -148,3 +148,25 @@ Para usarla sin instalar Python ni Maven, descarga el paquete correspondiente a 
 ## Paquetes sin instalar Java, Maven ni Python
 
 Consulta [la guía de distribución](DISTRIBUCION.md).
+
+## Ejemplos interactivos
+
+Cada uno de los siete módulos incluye el botón **Cargar ejemplo**, que prepara datos reales para explorar sus operaciones y animaciones: arreglo `[10, 20, 30, 40, 50]`, matriz `3×3`, lista enlazada, pila LIFO, cola FIFO, árbol binario de búsqueda y grafo no dirigido.
+
+## Modo de consola
+
+El laboratorio también se puede usar desde la terminal sin Maven ni JavaFX:
+
+```bash
+./run-console.sh
+```
+
+El script compila el modo de consola con Java 17 y abre el menú de las siete estructuras. Solicita los datos durante la ejecución, valida enteros y cantidades, permite realizar operaciones y volver al menú principal. Las estructuras reutilizan las implementaciones reales del proyecto.
+
+En CachyOS, si el archivo no tiene permiso de ejecución, se puede iniciar con:
+
+```bash
+bash run-console.sh
+```
+
+La interfaz de escritorio con nodos y animaciones se ejecuta con `mvn javafx:run` cuando Maven está instalado. El modo de consola es independiente de esa dependencia.
